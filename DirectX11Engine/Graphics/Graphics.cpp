@@ -5,6 +5,8 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	this->windowWidth = width;
 	this->windowHeight = height;
 
+	this->fpsTimer.Start();
+
 	if (!InitializeDirectX(hwnd))
 	{
 		return false;
@@ -19,6 +21,14 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	{
 		return false;
 	}
+
+	//Init ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO &io = ImGui::GetIO();
+	ImGui_ImplWin32_Init(hwnd);
+	ImGui_ImplDX11_Init(this->device.Get(), this->context.Get());
+	ImGui::StyleColorsDark();
 
 	return true;
 }
@@ -42,7 +52,8 @@ void Graphics::RenderFrame()
 	this->context->PSSetShaderResources(0, 1, this->myTexture.GetAddressOf());
 
 	//world matrix
-	XMMATRIX world = XMMatrixIdentity();
+	static float translationOffset[3] = { 0.0f, 0.0f, 0.0f };
+	XMMATRIX world = XMMatrixTranslation(translationOffset[0], translationOffset[1], translationOffset[2]);
 
 	this->constantBuffer.data.mat = world * this->camera.GetViewMatrix() * this->camera.GetProjectionMatrix(); // DirectX::XMMatrices are in row major layout
 	this->constantBuffer.data.mat = DirectX::XMMatrixTranspose(this->constantBuffer.data.mat); // in shaders matrices by default are in column major layout
@@ -54,20 +65,57 @@ void Graphics::RenderFrame()
 	UINT offset = 0;
 	this->context->IASetVertexBuffers(0, 1, this->vertexBuffer.GetAddressOf(), this->vertexBuffer.StridePtr(), &offset);
 	this->context->IASetIndexBuffer(this->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
 	this->context->DrawIndexed(this->indexBuffer.BufferSize(), 0, 0);
 
-	std::wstring coord = L"X = ";
-	coord += std::to_wstring(this->camera.GetPositionFloat3().x);
-	coord += L" Y = ";
-	coord += std::to_wstring(this->camera.GetPositionFloat3().y);
-	coord += L" Z = ";
-	coord += std::to_wstring(this->camera.GetPositionFloat3().z);
+
+	static int fpsCounter = 0;
+	static std::wstring fpsString = L"\nFPS: 0";
+	fpsCounter += 1;
+	if (this->fpsTimer.GetMillisecondsElapsed() > 1000.0)
+	{
+		fpsString = L"\nFPS: " + std::to_wstring(fpsCounter);
+		fpsCounter = 0;
+		this->fpsTimer.Restart();
+	}
+
+	std::wstring text = L"Camera position:\nX = ";
+	text += std::to_wstring(this->camera.GetPositionFloat3().x);
+	text += L" Y = ";
+	text += std::to_wstring(this->camera.GetPositionFloat3().y);
+	text += L" Z = ";
+	text += std::to_wstring(this->camera.GetPositionFloat3().z);
+
+	text += fpsString;
 
 	spriteBatch->Begin();
-	spriteFont->DrawString(this->spriteBatch.get(), coord.c_str(), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
+	spriteFont->DrawString(this->spriteBatch.get(), text.c_str(), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
 	spriteBatch->End();
 
-	this->swapChain->Present(1, NULL);
+	//start the ImGui frame
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	//Create ImGui window
+	ImGui::Begin("Test");
+
+	ImGui::DragFloat3("Translation X/Y/Z", translationOffset, 0.01f, -5.0f, 5.0f);
+
+	ImGui::End();
+	//assemble draw data
+	ImGui::Render();
+	//render draw data
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+	this->swapChain->Present(0, NULL);
+}
+
+Graphics::~Graphics()
+{
+	//Releases COM references that ImGui was given on setup
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 }
 
 bool Graphics::InitializeDirectX(HWND hwnd)

@@ -24,8 +24,15 @@ WindowContainer::WindowContainer()
 
 }
 
+// use extern callback to handle events for ImGui window
+extern LRESULT CALLBACK ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WindowContainer::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	// route all messages to ImGui window handler func
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
+		return true;
+
 	//OutputDebugStringA("WindowProcc from WindowContainer!\n");
 	switch (uMsg)
 	{

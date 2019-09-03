@@ -152,6 +152,11 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
     <ClCompile Include="Graphics\Graphics.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Keyboard\KeyboardClass.cpp" />
     <ClCompile Include="Keyboard\KeyboardEvent.cpp" />
     <ClCompile Include="Mouse\MouseClass.cpp" />
@@ -160,6 +165,7 @@
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StringConverter.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +176,14 @@
     <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="Graphics\ConstantBufferTypes.h" />
     <ClInclude Include="Graphics\Graphics.h" />
+    <ClInclude Include="Graphics\ImGui\imconfig.h" />
+    <ClInclude Include="Graphics\ImGui\imgui.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_internal.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_truetype.h" />
     <ClInclude Include="Graphics\IndexBuffer.h" />
     <ClInclude Include="Keyboard\KeyboardClass.h" />
     <ClInclude Include="Keyboard\KeyboardEvent.h" />
@@ -180,6 +194,7 @@
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Graphics\Vertex.h" />
     <ClInclude Include="Graphics\VertexBuffer.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
   <ItemGroup>

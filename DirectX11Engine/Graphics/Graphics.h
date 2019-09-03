@@ -9,12 +9,18 @@
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
 #include "Camera.h"
+#include "../Timer.h"
+
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_win32.h"
+#include "ImGui/imgui_impl_dx11.h"
 
 class Graphics
 {
 public:
 	bool Initialize(HWND hwnd, int width, int height);
 	void RenderFrame();
+	~Graphics();
 	// for access through an Engine object
 	Camera camera;
 
@@ -50,4 +56,6 @@ private:
 
 	int windowWidth = 0;
 	int windowHeight = 0;
+
+	Timer fpsTimer;
 };
