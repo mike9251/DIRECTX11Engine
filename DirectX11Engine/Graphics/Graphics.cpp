@@ -44,11 +44,6 @@ void Graphics::RenderFrame()
 	//world matrix
 	XMMATRIX world = XMMatrixIdentity();
 
-	this->camera.AdjustPosition(0.01f, 0.0f, 0.0f);
-
-	XMFLOAT3 lookAtPos = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	this->camera.SetLookAtPosition(lookAtPos);
-
 	this->constantBuffer.data.mat = world * this->camera.GetViewMatrix() * this->camera.GetProjectionMatrix(); // DirectX::XMMatrices are in row major layout
 	this->constantBuffer.data.mat = DirectX::XMMatrixTranspose(this->constantBuffer.data.mat); // in shaders matrices by default are in column major layout
 	if (!this->constantBuffer.ApplyChanges())
@@ -61,8 +56,15 @@ void Graphics::RenderFrame()
 	this->context->IASetIndexBuffer(this->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	this->context->DrawIndexed(this->indexBuffer.BufferSize(), 0, 0);
 
+	std::wstring coord = L"X = ";
+	coord += std::to_wstring(this->camera.GetPositionFloat3().x);
+	coord += L" Y = ";
+	coord += std::to_wstring(this->camera.GetPositionFloat3().y);
+	coord += L" Z = ";
+	coord += std::to_wstring(this->camera.GetPositionFloat3().z);
+
 	spriteBatch->Begin();
-	spriteFont->DrawString(this->spriteBatch.get(), L"HELLO WORLD DX11", DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
+	spriteFont->DrawString(this->spriteBatch.get(), coord.c_str(), DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
 	spriteBatch->End();
 
 	this->swapChain->Present(1, NULL);
@@ -109,7 +111,7 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 	UINT driver = 0;
 	for (unsigned int i = 0; i < numDriverTypes; i++)
 	{
-		hr = D3D11CreateDeviceAndSwapChain(0/*adapters[0].pAdapter*/, driverTypes[driver],
+		hr = D3D11CreateDeviceAndSwapChain(0/*adapters[1].pAdapter*/, driverTypes[driver],
 			NULL, 0, &featureLevels[i], numFeatureLevels, D3D11_SDK_VERSION, &swapChainDesc,
 			this->swapChain.GetAddressOf(), this->device.GetAddressOf(), &featureLevel, this->context.GetAddressOf());
 		if (SUCCEEDED(hr))

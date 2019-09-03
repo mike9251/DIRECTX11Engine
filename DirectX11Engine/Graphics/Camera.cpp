@@ -45,6 +45,26 @@ const XMFLOAT3 & Camera::GetRotationFloat3() const
 	return this->rot;
 }
 
+const XMVECTOR & Camera::GetForwardVector() const
+{
+	return this->vec_forward;
+}
+
+const XMVECTOR & Camera::GetBackwardVector() const
+{
+	return this->vec_backward;
+}
+
+const XMVECTOR & Camera::GetLeftVector() const
+{
+	return this->vec_left;
+}
+
+const XMVECTOR & Camera::GetRightVector() const
+{
+	return this->vec_right;
+}
+
 void Camera::SetPosition(const XMVECTOR & pos)
 {
 	this->posVector = pos;
@@ -148,4 +168,12 @@ void Camera::UpdateViewMatrix()
 	XMVECTOR upDirection = XMVector3TransformCoord(this->DEFAULT_UP_VECTOR, cameraRotationMatrix);
 
 	this->viewMatrix = XMMatrixLookAtLH(this->posVector, cameraTarget, upDirection); // eyePos, lookAt, up direction
+
+	// Get rotation matrix for direction vectors
+	XMMATRIX vec_RotationMatrix = XMMatrixRotationRollPitchYaw(0.0f, this->rot.y, 0.0f);
+
+	this->vec_forward = XMVector3TransformCoord(this->DEFAULT_FORWARD_VECTOR, vec_RotationMatrix);
+	this->vec_backward = XMVector3TransformCoord(this->DEFAULT_BACKWARD_VECTOR, vec_RotationMatrix);
+	this->vec_left = XMVector3TransformCoord(this->DEFAULT_LEFT_VECTOR, vec_RotationMatrix);
+	this->vec_right = XMVector3TransformCoord(this->DEFAULT_RIGHT_VECTOR, vec_RotationMatrix);
 }
