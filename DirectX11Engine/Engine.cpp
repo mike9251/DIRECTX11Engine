@@ -1,5 +1,5 @@
 #include "Engine.h"
-
+#include <iostream>
 bool Engine::Initialize(HINSTANCE hInstance, std::string windowTitle, std::string windowClass, int width, int height)
 {
 	//this->keyboard.EnableAutoRepeatChars();
@@ -19,7 +19,7 @@ bool Engine::ProcessMessages()
 
 void Engine::Update()
 {
-	float dt = timer.GetMillisecondsElapsed();
+	float dt = static_cast<float>(timer.GetMillisecondsElapsed());
 	timer.Restart();
 
 	while (!keyboard.CharBufferIsEmpty())
@@ -66,7 +66,14 @@ void Engine::Update()
 		}
 	}
 
-	const float cameraSpeed = 0.01f;
+	float cameraSpeed = 0.01f;
+
+	if (keyboard.KeyIsPressed(VK_SHIFT))
+	{
+		cameraSpeed = 0.5f;
+	}
+
+	this->gfx.gameObject[0].AdjustRotation(0.0f, 0.001f * dt, 0.0f);
 
 	if (keyboard.KeyIsPressed('W'))
 	{
@@ -91,6 +98,27 @@ void Engine::Update()
 	if (keyboard.KeyIsPressed('Z'))
 	{
 		this->gfx.camera.AdjustPosition(0.0f, -cameraSpeed * dt, 0.0f);
+	}
+	if (keyboard.KeyIsPressed('C'))//direct
+	{
+		XMVECTOR lightPos = this->gfx.camera.GetPositionVector();
+		lightPos += this->gfx.camera.GetForwardVector();
+		this->gfx.lights[0].SetPosition(lightPos);
+		this->gfx.lights[0].SetRotation(this->gfx.camera.GetRotationVector());
+	}
+	if (keyboard.KeyIsPressed('V'))//point
+	{
+		XMVECTOR lightPos = this->gfx.camera.GetPositionVector();
+		lightPos += this->gfx.camera.GetForwardVector();
+		this->gfx.lights[1].SetPosition(lightPos);
+		this->gfx.lights[1].SetRotation(this->gfx.camera.GetRotationVector());
+	}
+	if (keyboard.KeyIsPressed('B'))//spot
+	{
+		XMVECTOR lightPos = this->gfx.camera.GetPositionVector();
+		lightPos += this->gfx.camera.GetForwardVector();
+		this->gfx.lights[2].SetPosition(lightPos);
+		this->gfx.lights[2].SetRotation(this->gfx.camera.GetRotationVector());
 	}
 }
 

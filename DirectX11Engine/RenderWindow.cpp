@@ -4,9 +4,9 @@ bool RenderWindow::Initialize(WindowContainer *pWindowContainner, HINSTANCE hIns
 {
 	this->hInstance = hInstance;
 	this->windowTitle = windowTitle;
-	this->windowTitleWide = StringConverter::StringToWide(windowTitle);
+	this->windowTitleWide = StringHelper::StringToWide(windowTitle);
 	this->windowClass = windowClass;
-	this->windowClassWide = StringConverter::StringToWide(windowClass);
+	this->windowClassWide = StringHelper::StringToWide(windowClass);
 	this->width = width;
 	this->height = height;
 

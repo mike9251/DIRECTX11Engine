@@ -42,9 +42,6 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StringConverter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ErrorLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,11 +96,32 @@
     <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
       <Filter>Source Files\Graphics\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Model.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Mesh.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GameObject.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Color.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Texture.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\RenderableGameObject.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Light.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StringConverter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ErrorLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -182,12 +200,42 @@
     <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
       <Filter>Header Files\Graphics\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="COMException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Mesh.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GameObject.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Color.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Texture.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\RenderableGameObject.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Light.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="vertexShader.hlsl">
       <Filter>Source Files</Filter>
     </FxCompile>
     <FxCompile Include="pixelShader.hlsl">
+      <Filter>Source Files</Filter>
+    </FxCompile>
+    <FxCompile Include="pixelShader_no_light.hlsl">
       <Filter>Source Files</Filter>
     </FxCompile>
   </ItemGroup>
